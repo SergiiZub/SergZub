@@ -18,12 +18,22 @@ class NewsModel extends Model {
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
-    public function getArticle($category_id) {
+    public function getArticleList($category_id) {
         $connect = $this->db->connect();
         $stmt = $connect->prepare(
             'SELECT * FROM article WHERE category_id = :category_id'
         );
         $stmt->execute([':category_id' => $category_id]);
+
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function getArticle($id) {
+        $connect = $this->db->connect();
+        $stmt = $connect->prepare(
+            'SELECT * FROM article WHERE id = :id LIMIT 1'
+        );
+        $stmt->execute([':id' => $id]);
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }

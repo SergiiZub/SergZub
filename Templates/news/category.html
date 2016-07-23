@@ -12,7 +12,7 @@
     <?php foreach ($data as $article_list) :?>
         <tr>
             <td> <?=$article_list->id; ?></td>
-            <td> <?=$article_list->title; ?></td>
+            <td> <a href="/art?id=<?=$article_list->id; ?>"><?=$article_list->title; ?> </a> </td>
             <td> <?=$article_list->date; ?></td>
             <!--            <td> --><?//=$user->date_registration?><!--</td>-->
         </tr>

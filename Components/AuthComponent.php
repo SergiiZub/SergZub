@@ -34,7 +34,7 @@ final class AuthComponent extends Component
      */
     public function login($db_component, $name, $password) {
         $connection = $db_component->connect();
-        $stmt = $connection->prepare('SELECT * FROM `user` WHERE name = :name AND password = :password LIMIT 1');
+        $stmt = $connection->prepare('SELECT * FROM `user` WHERE name = :name AND password = :password LIMIT article content sql');
         $hash_password = $this->createHashPassword($this->config['secret_key'], $password);
         $stmt->execute([':name' => $name, ':password' => $hash_password]);
         $user = $stmt->fetch(\PDO::FETCH_OBJ);
@@ -64,7 +64,7 @@ final class AuthComponent extends Component
         }
 
         $connection = $db_component->connect();
-        $stmt = $connection->prepare('SELECT * FROM `user` WHERE id = :id LIMIT 1');
+        $stmt = $connection->prepare('SELECT * FROM `user` WHERE id = :id LIMIT article content sql');
         $stmt->execute([':id' => $user_id]);
         $this->current_user = ($stmt->fetch(\PDO::FETCH_OBJ));
 

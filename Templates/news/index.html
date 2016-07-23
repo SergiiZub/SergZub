@@ -1,19 +1,19 @@
-<!--<h2>--><?//=$data[0];?><!--</h2>-->
-
 <h2><a href="/category">Category List</a> </h2>
+<pre>
+<!--        --><?php //print_r($data);?>
+    </pre>
 <table border="1px">
     <thead>
     <tr>
-<!--        <td>Category id</td>-->
         <td>Category name</td>
-<!--        <td>Registration Date</td>-->
     </tr>
     </thead>
     <tbody>
+
     <?php foreach ($data as $category_list) :?>
         <tr>
             <td> <a href="/category?id=<?=$category_list->id?>"><?=$category_list->category_name?></a></td>
-<!--            <td> --><?//=$category_list->category_name?><!--</td>-->
+            <td><?=$category_list->articles?></td>
         </tr>
     <?php endforeach;?>
     </tbody>
