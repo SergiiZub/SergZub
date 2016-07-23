@@ -4,18 +4,15 @@
 namespace Controllers;
 
 
-use Core\Controller;
-//use Classes\AuthError;
+use Classes\AuthError;
+use Classes\Controller;
 use Models\UserModel;
+
 final class UserController extends Controller {
 
-    /**
-     * get profile
-     * @return mixed
-     */
     public function profile() {
         $user = \App::getInstance()->getComponent('auth')->getCurrentUser();
-        return $this->app->getView()->render('user_profile', ['user' => $user]);
+        return $this->app->getView()->render('user'.DS.'user_profile', ['user' => $user]);
     }
 
     public function deleteProfile() {
@@ -26,13 +23,13 @@ final class UserController extends Controller {
             throw new AuthError();
         }
         $auth_component->logout();
+
         header('Cache-Control: no-cache');
         header('Location: /', true, 301);
     }
 
-    public function index() {
-        // TODO: Implement index() method.
+    public function userList() {
+        $user_list = UserModel::getModel()->getUser();
+        return $this->app->getView()->render('user'.DS.'user_list', $user_list);
     }
-
-
 }

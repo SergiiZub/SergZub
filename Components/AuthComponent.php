@@ -3,7 +3,7 @@
 namespace Components;
 
 
-use Core\Component;
+use Classes\Component;
 
 final class AuthComponent extends Component
 {
@@ -21,9 +21,6 @@ final class AuthComponent extends Component
      */
     public function registration($db_component, $name, $password) {
         $connection = $db_component->connect();
-        if (!$connection){
-            echo 'no connect to DB';
-        }
         $stmt = $connection->prepare('INSERT INTO `user` (name, password) VALUES (:name, :password)');
         $hash_password = $this->createHashPassword($this->config['secret_key'], $password);
         return $stmt->execute([':name' => $name, ':password' => $hash_password]);

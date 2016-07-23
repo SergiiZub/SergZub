@@ -4,14 +4,14 @@
 namespace Controllers;
 
 use Components\AuthComponent;
-use Core\Controller;
+use Classes\Controller;
 use Models\UserModel;
 
 final class AuthController extends Controller {
     public function registration() {
 
         if (isset($_POST['ensure_reg'])) {
-print_r($_POST);
+
             /**
              * @var AuthComponent $auth_component
              */
@@ -21,7 +21,7 @@ print_r($_POST);
                 $db_component = $db, $name = $_POST['name'],
                 $password = $_POST['password']);
             if ($status === false) {
-                return $this->app->getView()->render('Errors'.DS.'500');
+                return $this->app->getView()->render('errors'.DS.'500');
             }
 
             # Login after registration
@@ -37,11 +37,7 @@ print_r($_POST);
             return true;
         }
 
-        return $this->app->getView()->render('Auth'.DS.'registration');
-    }
-
-    public function index() {
-        // TODO: Implement index() method.
+        return $this->app->getView()->render('auth'.DS.'registration');
     }
 
     public function login() {
@@ -58,7 +54,7 @@ print_r($_POST);
                 $password = $_POST['password']);
 
             if (!$user) {
-                return $this->app->getView()->render('Errors'.DS.'500');
+                return $this->app->getView()->render('errors'.DS.'500');
             }
 
             header('Cache-Control: no-cache');
@@ -66,11 +62,11 @@ print_r($_POST);
             return true;
         }
 
-        return $this->app->getView()->render('Auth'.DS.'login');
+        return $this->app->getView()->render('auth'.DS.'login');
     }
 
     public function logout() {
-        \App::getInstance()->getComponent('Auth'.DS.'auth')->logout();
+        \App::getInstance()->getComponent('auth')->logout();
         header('Cache-Control: no-cache');
         header('Location: /', true, 301);
     }
