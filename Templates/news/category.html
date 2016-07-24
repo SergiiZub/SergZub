@@ -1,21 +1,8 @@
 <h2><a href="/category">Category List</a> </h2>
-<table border="1px">
-    <thead>
-    <tr>
-        <td>Article id</td>
-        <td>Article title</td>
-        <td>Date</td>
-        <!--        <td>Registration Date</td>-->
-    </tr>
-    </thead>
-    <tbody>
+<ul>
     <?php foreach ($data as $article_list) :?>
-        <tr>
-            <td> <?=$article_list->id; ?></td>
-            <td> <a href="/art?id=<?=$article_list->id; ?>"><?=$article_list->title; ?> </a> </td>
-            <td> <?=$article_list->date; ?></td>
-            <!--            <td> --><?//=$user->date_registration?><!--</td>-->
-        </tr>
+<!--            <td> --><?//=$article_list->id; ?><!--</td>-->
+            <li> <a href="/art?id=<?=$article_list->id; ?>"><?=$article_list->title; ?> </a> </li>
+<!--            <td> --><?//=$article_list->date; ?><!--</td>-->
     <?php endforeach;?>
-    </tbody>
-</table>
+</ul>

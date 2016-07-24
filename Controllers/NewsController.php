@@ -9,7 +9,16 @@ use Models\NewsModel;
 
 class NewsController extends Controller
 {
-    public function index() {
+    public $data = [];
+
+    public function index(){
+        $this->data['last_news'] = $this->getLastNews(4);
+        $this->data['category_list'] = $this->categoryList();
+        $this->data['buttons'] = $this->getButtons();
+        return $this->app->getView()->render('news'.DS.'index', $this->data);
+    }
+
+    public function categoryList() {
         $category_list = NewsModel::getModel()->getCategoryList();
 
         /**
@@ -19,9 +28,7 @@ class NewsController extends Controller
             $category->{'articles'} = $this->getLastNews(5, $category->id);
         }
 
-//        $data = $this->getLastNews(4);
-
-        return $this->app->getView()->render('news'.DS.'index', $category_list);
+        return $this->app->getView()->render('news'.DS.'category_list', $category_list);
     }
 
     public function admin_index() {
@@ -42,11 +49,7 @@ class NewsController extends Controller
     }
 
     public function getArticle($article_id = null) {
-//        echo 'article page';
-//        if (!empty($_GET['id'])){
-//            $r[] = 'I am article with id = ' . $_GET['id'] . '<br>';
-//            return $this->app->getView()->render('news'.DS.'category', $r);
-//        }
+
         if (empty($_GET['id'])){
             return $this->getCategory();
         }
@@ -63,17 +66,25 @@ class NewsController extends Controller
         $news_component = (\App::getInstance()->getComponent('news'));
         $db = (\App::getInstance()->getComponent('db'));
         $last_news = $news_component->getLastNews($db, $count, $category_id);
-        //var_dump($last_news);
         return $this->app->getView()->render('news'.DS.'last_news', $last_news);
+    }
 
-//        $news_list = \App::getInstance()->getComponent('news')->getLastNews();
-//        $user = \App::getInstance()->getComponent('auth')->getCurrentUser();
-//        return $this->app->getView()->render('user'.DS.'user_profile', ['user' => $user]);
-//
-//        $auth_component = (\App::getInstance()->getComponent('auth'));
-//        $db = \App::getInstance()->getComponent('db');
-//        $status = $auth_component->registration(
-//            $db_component = $db, $name = $_POST['name'],
-//            $password = $_POST['password']);
+//    /**
+//     * @return int
+//     */
+//    public function itemsCount($table_name){
+//        $pages_component = (\App::getInstance()->getComponent('page'));
+//        $db = (\App::getInstance()->getComponent('db'));
+//        $count = $pages_component->itemsCount($db, $table_name);
+//        return $count[0]->items_count;
+//    }
+
+    public function getButtons(){
+     //   $items_count = $this->itemsCount('article');
+        $pages_component = (\App::getInstance()->getComponent('page'));
+        $db = (\App::getInstance()->getComponent('db'));
+        $buttons = $pages_component->getButtons($db, 'article');
+        return $this->app->getView()->render('news'.DS.'buttons', $buttons);
+
     }
 }

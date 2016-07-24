@@ -18,6 +18,7 @@ require_once (ROOT.'lib'.DS.'autoload.php');
 Components\DbComponent::register('db');
 Components\AuthComponent::register('auth');
 \Components\NewsComponent::register('news');
+\Components\PagesComponent::register('page');
 
 # App init
 

@@ -4,6 +4,7 @@
 
 return [
     'secret_key' => 'jkh4gkl5sdf9jbg7hk',
+    'articles_per_page' => '5',
     'templates_path' => 'Templates' . DS,
     'templates_ext' => '.html',
     'db' => [
