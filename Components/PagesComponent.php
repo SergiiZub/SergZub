@@ -17,6 +17,18 @@ class PagesComponent extends Component
         // TODO: Implement init() method.
     }
 
+    public function getPage($db_component){
+        $category = (int) isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $page = (int) isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $items_per_page = (int) \App::getInstance()->getConfig('articles_per_page');
+        $row_number = $page * $items_per_page - $items_per_page;
+
+        $connection = $db_component->connect();
+        $sql = "SELECT * FROM article WHERE category_id = {$category} LIMIT {$row_number}, {$items_per_page}";
+        $stmt = $connection->prepare($sql);
+        $stmt->execute();
+        return ($stmt->fetchAll(\PDO::FETCH_OBJ));
+    }
 
     public function createButtons(int $items_count = 1) {
         $items_per_page = \App::getInstance()->getConfig('articles_per_page');
@@ -61,7 +73,7 @@ class PagesComponent extends Component
 
     public function getButtons($db_component, $table_name) {
         $connection = $db_component->connect();
-        $sql = "SELECT count(id) AS items_count FROM {$table_name} ";
+        $sql = "SELECT count(*) AS items_count FROM {$table_name} ";
         $stmt = $connection->prepare($sql);
         $stmt->execute([':item' => $table_name]);
         $count = ($stmt->fetchAll(\PDO::FETCH_OBJ));

@@ -11,11 +11,26 @@ class NewsController extends Controller
 {
     public $data = [];
 
+    /**
+     * create index page
+     * @return string
+     */
     public function index(){
         $this->data['last_news'] = $this->getLastNews(4);
         $this->data['category_list'] = $this->categoryList();
-        $this->data['buttons'] = $this->getButtons();
+
         return $this->app->getView()->render('news'.DS.'index', $this->data);
+    }
+
+    /**
+     * create category page
+     * @return string
+     */
+    public function categoryPage(){
+       // $this->data['article_list'] = $this->getCategory();
+        $this->data['article_list'] = $this->getPage();
+        $this->data['buttons'] = $this->getButtons();
+        return $this->app->getView()->render('news'.DS.'category_page', $this->data);
     }
 
     public function categoryList() {
@@ -45,6 +60,7 @@ class NewsController extends Controller
         if (!$article_list){
             return $this->app->getView()->render('errors'.DS.'404');
         }
+
         return $this->app->getView()->render('news'.DS.'category', $article_list);
     }
 
@@ -86,5 +102,12 @@ class NewsController extends Controller
         $buttons = $pages_component->getButtons($db, 'article');
         return $this->app->getView()->render('news'.DS.'buttons', $buttons);
 
+    }
+
+    public function getPage(){
+        $pages_component = (\App::getInstance()->getComponent('page'));
+        $db = (\App::getInstance()->getComponent('db'));
+        $page = $pages_component->getPage($db, 'article');
+        return $this->app->getView()->render('news'.DS.'category_articles', $page);
     }
 }

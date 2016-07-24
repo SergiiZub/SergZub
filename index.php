@@ -28,7 +28,8 @@ $app->init(ROOT.'lib'.DS.'config.php');
 # Routing
 
 $app->addRoute('/', \Controllers\NewsController::class);
-$app->addRoute('/category', \Controllers\NewsController::class, 'getCategory');
+//$app->addRoute('/category', \Controllers\NewsController::class, 'getPage');
+$app->addRoute('/category', \Controllers\NewsController::class, 'categoryPage');
 $app->addRoute('/art', \Controllers\NewsController::class, 'getArticle');
 $app->addRoute('/registration', AuthController::class, 'registration');
 $app->addRoute('/login', AuthController::class, 'login');

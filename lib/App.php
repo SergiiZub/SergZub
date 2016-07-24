@@ -78,6 +78,7 @@ final class App {
     public function inspect() {
         $uri_params = explode('?', $_SERVER['REQUEST_URI']);
         $route_path = $uri_params[0];
+        $path_parts = explode('/', $route_path);
 
         $this->getComponent('auth')->middleware($this->getComponent('db'));
 

@@ -1,15 +1,7 @@
-<!--<pre>-->
-<!-- --><?php //print_r($data);?>
-<!--</pre>-->
-<!--<!--<br>-->-->
 
-<?//=$data[0]->items_count;?><!--<br>-->
-
-<!--  <b>Pagination</b><hr/>-->
-<!---->
 <?php foreach ($data as $button) :
   if ($button->is_active) : ?>
-    <a href="?page=<?=$button->page?>"><?=$button->text?></a>
+    <a href="?id=<?=$_GET['id'] . '&';?>page=<?=$button->page?>"><?=$button->text?></a>
   <?php else:?>
     <span style="color: #555555"><?=$button->text?></span>
   <?php endif;
