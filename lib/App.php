@@ -22,6 +22,8 @@ final class App {
      */
     private $route_list = [];
 
+    private $params;
+
     /**
      * @return self
      */
@@ -75,10 +77,17 @@ final class App {
         return $this->components[$name];
     }
 
+    public function getParams() {
+        return $this->params;
+    }
+
+
+
     public function inspect() {
         $uri_params = explode('?', $_SERVER['REQUEST_URI']);
         $route_path = $uri_params[0];
         $path_parts = explode('/', $route_path);
+        $this->params = $path_parts;
 
         $this->getComponent('auth')->middleware($this->getComponent('db'));
 
@@ -86,7 +95,7 @@ final class App {
          * @var Route $route
          */
         foreach ($this->route_list as $route) {
-            if ($route->inspect($route_path)) {
+            if ($route->inspect($path_parts[1])) {
                 return $route->callAction();
             }
         }

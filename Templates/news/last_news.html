@@ -1,7 +1,3 @@
-<h4>Last news:</h4>
-<ul>
-  <?php foreach ($data as $news) :?>
-    <li><a href="/art?id=<?=$news->id;?>"><?=$news->title;?></a></li>
-  <?php endforeach;?>
-</ul>
-
+<?php foreach ($data as $news) :?>
+    <a href="/article/<?=$news->id;?>"><?=$news->title;?></a><br>
+<?php endforeach;?>

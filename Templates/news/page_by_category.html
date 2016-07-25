@@ -1,0 +1,11 @@
+<!--<pre>-->
+<!--  --><?php //print_r($data);?>
+<!--</pre>-->
+<div>
+    <ul>
+        <?php foreach ($data as $article) : ?>
+            <li>Title:<a href="/article/<?=$article->id;?>" ><?=$article->title;?></a></li>
+        <? endforeach;?>
+    </ul>
+</div>
+<?//=$data['pagination'];?>

@@ -29,8 +29,9 @@ $app->init(ROOT.'lib'.DS.'config.php');
 
 $app->addRoute('/', \Controllers\NewsController::class);
 //$app->addRoute('/category', \Controllers\NewsController::class, 'getPage');
-$app->addRoute('/category', \Controllers\NewsController::class, 'categoryPage');
-$app->addRoute('/art', \Controllers\NewsController::class, 'getArticle');
+$app->addRoute('/category', \Controllers\NewsController::class, 'index');
+//$app->addRoute('/category', \Controllers\NewsController::class, 'categoryPage');
+$app->addRoute('/article', \Controllers\NewsController::class, 'article');
 $app->addRoute('/registration', AuthController::class, 'registration');
 $app->addRoute('/login', AuthController::class, 'login');
 $app->addRoute('/profile', UserController::class, 'profile', 'isAuthRequired');

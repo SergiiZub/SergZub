@@ -30,13 +30,13 @@ class PagesComponent extends Component
         return ($stmt->fetchAll(\PDO::FETCH_OBJ));
     }
 
-    public function createButtons(int $items_count = 1) {
+    public function createButtons(int $items_count = 1, $page_number = 1) {
         $items_per_page = \App::getInstance()->getConfig('articles_per_page');
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        //$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
        // extract($options);
 
         /** @var int $currentPage */
-        if(!$page){
+        if(!$page_number){
             return;
         }
 
@@ -50,17 +50,17 @@ class PagesComponent extends Component
             return;
         }
         /** @var int $currentPage */
-        if ($page > $pages_count){
-            $page = $pages_count;
+        if ($page_number > $pages_count){
+            $page_number = $pages_count;
         }
-        $buttons[] = $this->buttonParams($page -1, $page > 1, 'Previous');
+        $buttons[] = $this->buttonParams($page_number -1, $page_number > 1, 'Previous');
 
         for ($i = 1; $i <= $pages_count; $i++){
-            $active = $page != $i;
+            $active = $page_number != $i;
             $buttons[] = $this->buttonParams($i, $active);
         }
 
-        $buttons[] = $this->buttonParams($page +1, $page < $pages_count, 'Next');
+        $buttons[] = $this->buttonParams($page_number +1, $page_number < $pages_count, 'Next');
         return $buttons;
     }
 
@@ -71,14 +71,14 @@ class PagesComponent extends Component
         return (object)$button_params;
     }
 
-    public function getButtons($db_component, $table_name) {
+    public function getButtons($db_component, $table_name, $category_id, $page_number) {
         $connection = $db_component->connect();
-        $sql = "SELECT count(*) AS items_count FROM {$table_name} ";
+        $sql = "SELECT count(*) AS items_count FROM {$table_name} WHERE category_id = {$category_id}";
         $stmt = $connection->prepare($sql);
-        $stmt->execute([':item' => $table_name]);
+        $stmt->execute();
         $count = ($stmt->fetchAll(\PDO::FETCH_OBJ));
 
-        return $this->createButtons($count[0]->items_count);
+        return $this->createButtons($count[0]->items_count, $page_number);
     }
 
 }

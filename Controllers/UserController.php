@@ -9,6 +9,10 @@ use Classes\Controller;
 use Models\UserModel;
 
 final class UserController extends Controller {
+    function index() {
+        // TODO: Implement index() method.
+    }
+
 
     public function profile() {
         $user = \App::getInstance()->getComponent('auth')->getCurrentUser();

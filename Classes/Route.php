@@ -27,6 +27,9 @@ final class Route
     }
 
     public function inspect($current_uri) {
+        if ($current_uri == ""){
+            $current_uri = '/';
+        }
         return strpos($this->uri, $current_uri) !== false;
     }
 

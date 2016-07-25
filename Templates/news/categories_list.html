@@ -1,0 +1,12 @@
+<!--<pre>-->
+<!--  --><?php //print_r($data);?>
+<!--</pre>-->
+<div>
+  <ul>
+    <?php foreach ($data as $category) : ?>
+      <li><a href="category/<?=$category->category_name;?>"><?=$category->category_name;?></a>
+      <br><?=$category->articles?>
+      </li>
+    <? endforeach;?>
+  </ul>
+</div>

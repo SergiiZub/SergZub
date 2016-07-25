@@ -8,6 +8,11 @@ use Classes\Controller;
 use Models\UserModel;
 
 final class AuthController extends Controller {
+    function index() {
+        // TODO: Implement index() method.
+    }
+
+
     public function registration() {
 
         if (isset($_POST['ensure_reg'])) {
