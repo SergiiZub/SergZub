@@ -1,0 +1,50 @@
+
+<a href="/news/category/<?=$data['article'][0]->category;?>/"><?=$data['article'][0]->category;?></a>
+<h3><?=$data['article'][0]->title;?></h3>
+<h4>Author: <?=$data['article'][0]->author;?></h4><br>
+<h4>Date: <?=$data['article'][0]->date;?></h4><br>
+<div>
+  <p><?=$data['article'][0]->content;?></p>
+</div>
+<!--<pre>-->
+<?//=var_dump($data);?>
+<!--</pre>-->
+
+
+<br><h5>tags:</h5>
+<p>
+  <?php foreach (explode(' ', $data['article'][0]->tags) as $tag) : ?>
+    <a href="/news/articles_list/<?=$tag;?>/">#<?=$tag;?></a> ,
+  <?php endforeach;?>
+</p>
+
+<!--<div>-->
+<!--  <br><h5>Comments:</h5>-->
+<!--  --><?php //foreach ($data['comments'] as $comment) :?>
+<!--      <div>-->
+<!--        <p>--><?//= $comment->name;?><!--</p>-->
+<!--        <p>--><?//= $comment->date;?><!--</p>-->
+<!--        <p>Message: --><?//= $comment->msg;?><!--</p><hr>-->
+<!--      </div>-->
+<!--  --><?php //endforeach;?>
+<!--</div>-->
+
+<div>
+  <h4>Comments:</h4>
+  <h5><?=count($data['comments']);?></h5><hr>
+  <?php foreach ($data['comments'] as $comment) :?>
+    <div style="padding: 10px; margin-top: 20px; border: solid 1px #dedede">
+      <b><?= $comment->name;?></b><br>
+      <p><?= $comment->date;?></p>
+      <p>Message: <?= $comment->msg;?></p><br>
+    </div>
+  <?php endforeach;?>
+  <br><hr>
+  <form>
+    <h4>Add comment</h4><br>
+    <input type="text" class="form-control" name="name" placeholder="your name"><br>
+    <textarea name="msg" class="form-control"></textarea><br>
+    <input type="submit" value="Add comment"><br>
+  </form>
+</div>
+

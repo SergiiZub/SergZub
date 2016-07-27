@@ -4,7 +4,7 @@
 namespace Models;
 
 
-use Classes\Model;
+use Core\Model;
 
 class UserModel extends Model {
     public function getUser() {

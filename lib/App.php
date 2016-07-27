@@ -1,28 +1,22 @@
 <?php
-use Classes\View;
-use Classes\Route;
+use Core\View;
+use Core\Router;
+use Classes\DB;
+use Classes\Config;
+use Classes\Lang;
+use Classes\Session;
+use Core\Controller;
+use Controllers\PagesController;
+use Controllers\AuthController;
 
-final class App {
+final class App
+{
     static private $instance;
-
-    /**
-     * @var array $config
-     */
-    private $config;
-
-    /**
-     * @var array $components
-     */
     private $components;
-
-    private $view;
-
-    /**
-     * @var array $route_list
-     */
-    private $route_list = [];
-
-    private $params;
+    protected static $router;
+    public static $db;
+ //   private $view;
+    private $config;
 
     /**
      * @return self
@@ -40,35 +34,6 @@ final class App {
 
     private function __clone() {}
 
-    public function getConfig($key = null) {
-        return ($key ? $this->config[$key] : $this->config);
-    }
-
-    public function init($path2config) {
-        $this->config = require_once $path2config;
-
-        $this->view = new View($this->config['templates_path'], $this->config['templates_ext']);
-
-        /**
-         * @var \Classes\Component $component
-         */
-        foreach ($this->components as $component) {
-            $component->init();
-        }
-    }
-
-    /**
-     * @return View
-     */
-    public function getView() {
-        return $this->view;
-    }
-
-    public function addRoute($uri, $controller_cls, $action_name = 'index', $action_access = null) {
-        $controller = new $controller_cls;
-        $this->route_list[] = new Route($uri, $controller, $action_name, $action_access);
-    }
-
     public function addComponent($name, $component_cls) {
         $this->components[$name] = new $component_cls;
     }
@@ -77,28 +42,61 @@ final class App {
         return $this->components[$name];
     }
 
-    public function getParams() {
-        return $this->params;
+    public function getConfig($key = null) {
+        return ($key ? Config::get($key) : Config::get());
     }
 
+    public static function getRouter()
+    {
+        return self::$router;
+    }
 
+    public function init() {
+        $this->config = Config::get();
 
-    public function inspect() {
-        $uri_params = explode('?', $_SERVER['REQUEST_URI']);
-        $route_path = $uri_params[0];
-        $path_parts = explode('/', $route_path);
-        $this->params = $path_parts;
+        foreach ($this->components as $component) {
+            $component->init();
+        }
+    }
 
+    public function run($uri) {
         $this->getComponent('auth')->middleware($this->getComponent('db'));
+        self::$router = new Router($uri);
+        self::$db = new DB(Config::get('db.host'), Config::get('db.user'), Config::get('db.password'), Config::get('db.db_name'));
 
-        /**
-         * @var Route $route
-         */
-        foreach ($this->route_list as $route) {
-            if ($route->inspect($path_parts[1])) {
-                return $route->callAction();
+        Lang::load(self::$router->getLanguage());
+
+        $controller_class = 'Controllers\\'.ucfirst(self::$router->getController()) . 'Controller';
+        $controller_method = strtolower(self::$router->getMethodPrefix() . self::$router->getAction());
+
+        $layout = self::$router->getRoute();
+        if ($layout == 'admin' && Session::get('role') != 'admin'){
+            if($controller_method != 'admin_login'){
+                Router::redirect('/admin/users/login');
             }
         }
-        return false;
+
+        //Calling controller's method
+
+        $controller_path = str_replace('\\', DS, ROOT.$controller_class) . '.php';
+        if (!file_exists($controller_path)){
+            Router::redirect('');
+        }
+
+        $controller_object = new $controller_class();
+
+        if (method_exists($controller_object, $controller_method)){
+            //Controller's action may return a view path
+            $view_path = $controller_object->$controller_method();
+            $view_object = new View($controller_object->getData(), $view_path);
+            $content = $view_object->render();
+
+        } else {
+            throw new Exception('Method ' . $controller_method . ' of class ' . $controller_class . ' does not exist.');
+        }
+
+        $layout_path = VIEWS_PATH . DS . $layout . '.html';
+        $layout_view_object = new View(compact('content'), $layout_path);
+        echo $layout_view_object->render();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Components;
 
-use Classes\Component;
+use Core\Component;
 
 final class DbComponent extends Component
 {
@@ -24,7 +24,13 @@ final class DbComponent extends Component
                 . 'dbname=' . $this->db_config['db_name'] . ';'
         );
 
-        $this->connection = new \PDO($dsn, $this->db_config['user'], $this->db_config['password']);
+        try{
+            $this->connection = new \PDO($dsn, $this->db_config['user'], $this->db_config['password']);
+        } catch (\PDOException $e) {
+            print " Connect to db Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
+
         return $this->connection;
     }
 

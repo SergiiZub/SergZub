@@ -3,7 +3,8 @@
 namespace Components;
 
 
-use Classes\Component;
+use Classes\Session;
+use Core\Component;
 
 final class AuthComponent extends Component
 {
@@ -34,37 +35,44 @@ final class AuthComponent extends Component
      */
     public function login($db_component, $name, $password) {
         $connection = $db_component->connect();
-        $stmt = $connection->prepare('SELECT * FROM `user` WHERE name = :name AND password = :password LIMIT article content sql');
+        $stmt = $connection->prepare('SELECT * FROM `user` WHERE name = :name AND password = :password LIMIT 1');
         $hash_password = $this->createHashPassword($this->config['secret_key'], $password);
         $stmt->execute([':name' => $name, ':password' => $hash_password]);
         $user = $stmt->fetch(\PDO::FETCH_OBJ);
 
+
         if ($user) {
-            setcookie('USER_SESSION', $this->encryptSessionToken($this->config['secret_key'], $user->id));
+            Session::set('USER_SESSION', $this->encryptSessionToken($this->config['secret_key'], $user->id));
+            Session::set('USER_NAME', $user->name);
+            $this->current_user = $user;
         }
         return $user;
     }
 
     public function logout() {
-        setcookie('USER_SESSION', null, -1);
+        $this->current_user = null;
+        Session::delete('USER_SESSION');
+        Session::delete('USER_NAME');
     }
 
     /**
      * @param DbComponent $db_component
+     * @return bool
      */
     public function middleware($db_component) {
-        if (!isset($_COOKIE['USER_SESSION'])) {
+        if (empty($_SESSION['USER_SESSION'])) {
             return false;
         }
-        $user_id = $this->decryptSessionToken($this->config['secret_key'], $_COOKIE['USER_SESSION']);
+
+        $user_id = $this->decryptSessionToken($this->config['secret_key'], $_SESSION['USER_SESSION']);
 
         if (!$user_id) {
-            $this->current_user = null;
+            $this->logout();
             return false;
         }
 
         $connection = $db_component->connect();
-        $stmt = $connection->prepare('SELECT * FROM `user` WHERE id = :id LIMIT article content sql');
+        $stmt = $connection->prepare('SELECT * FROM `user` WHERE id = :id LIMIT 1');
         $stmt->execute([':id' => $user_id]);
         $this->current_user = ($stmt->fetch(\PDO::FETCH_OBJ));
 

@@ -1,0 +1,20 @@
+
+<h3><a href="/news/">Categories list</a></h3>
+<ul>
+  <?php foreach ($data['article_list_by_category']['list'] as $news) :?>
+    <a href="/news/article/<?=$news->id;?>">
+      <div>
+          <img src=" <?=$news->img;?>" height="50px">
+          <p><?=$news->title;?></p>
+      </div>
+    </a>
+  <?endforeach;?>
+</ul>
+
+<?php foreach ($data['article_list_by_category']['buttons'] as $button) :
+    if ($button->is_active) : ?>
+        <a href="<?=$button->page?>"><?=$button->text?></a>
+    <?php else:?>
+        <span style="color: #555555"><?=$button->text?></span>
+    <?php endif;
+endforeach; ?>

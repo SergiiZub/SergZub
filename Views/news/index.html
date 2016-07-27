@@ -1,0 +1,25 @@
+
+<div class="" id="slid">
+  <div id="left" onclick="left()"><h1></h1></div>
+  <?php foreach ($data['last_news'] as $news) :?>
+  <a href=#>
+    <div id='slider'>
+      <?=$news->title;?>
+    </div>
+  </a>
+  <?endforeach;?>
+  <div id="right" onclick='right()'><h1></h1></div>
+</div>
+
+
+  <?php foreach ($data['categories_list'] as $category) : ?>
+    <li><a href="/news/category/<?=$category->category_name;?>/"><?=$category->category_name;?></a>
+      <ul>
+        <?php foreach ($category->article_list as $article) :?>
+            <li><?=$article->title;?></li>
+        <?endforeach;?>
+      </ul>
+    </li>
+  <?php endforeach;?>
+</ul>
+

@@ -3,13 +3,21 @@
 
 namespace Controllers;
 
+use Classes\Session;
 use Components\AuthComponent;
-use Classes\Controller;
+use Core\Controller;
+use Core\Router;
 use Models\UserModel;
 
 final class AuthController extends Controller {
+
     function index() {
-        // TODO: Implement index() method.
+        $user = \App::getInstance()->getComponent('auth')->getCurrentUser();
+        if ($user) {
+            Router::redirect('users/profile');
+        } else {
+            Router::redirect('auth/login');
+        }
     }
 
 
@@ -26,7 +34,8 @@ final class AuthController extends Controller {
                 $db_component = $db, $name = $_POST['name'],
                 $password = $_POST['password']);
             if ($status === false) {
-                return $this->app->getView()->render('errors'.DS.'500');
+                Session::setFlash('Registration filed!');
+                Router::redirect('/auth/registration/');
             }
 
             # Login after registration
@@ -34,18 +43,23 @@ final class AuthController extends Controller {
             $auth_component->login(
                 $db_component = $db, $name = $_POST['name'],
                 $password = $_POST['password']);
-
+            if($auth_component){
+                Session::setFlash('Login filed!');
+                return false;
+            }
             # Redirect to profile
-
-            header('Cache-Control: no-cache');
-            header('Location: /profile', false, 301);
-            return true;
+           return Router::redirect('/users/profile/');
         }
 
-        return $this->app->getView()->render('auth'.DS.'registration');
     }
 
     public function login() {
+
+        $user = \App::getInstance()->getComponent('auth')->getCurrentUser();
+        if ($user){
+           return Router::redirect('/users/profile/');
+
+        }
 
         if (isset($_POST['ensure_login'])) {
 
@@ -54,26 +68,26 @@ final class AuthController extends Controller {
              */
             $auth_component = (\App::getInstance()->getComponent('auth'));
             $db = \App::getInstance()->getComponent('db');
+
             $user = $auth_component->login(
                 $db_component = $db, $name = $_POST['name'],
                 $password = $_POST['password']);
 
             if (!$user) {
-                return $this->app->getView()->render('errors'.DS.'500');
+                Session::setFlash('Auth filed!');
+
+               // return Router::redirect('/auth/login/');
             }
-
-            header('Cache-Control: no-cache');
-            header('Location: /profile', false, 301);
-            return true;
+                Session::setFlash('You logged in as ');
+                Router::redirect('/users/profile/');
+            //return true;
         }
-
-        return $this->app->getView()->render('auth'.DS.'login');
     }
 
     public function logout() {
         \App::getInstance()->getComponent('auth')->logout();
-        header('Cache-Control: no-cache');
-        header('Location: /', true, 301);
+        Session::setFlash('You logged out! ');
+        Router::redirect('/auth/login/');
     }
 
 }
