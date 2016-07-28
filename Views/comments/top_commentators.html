@@ -1,0 +1,5 @@
+<ul>
+  <?php foreach ($data['top_commentators'] as $commentator):?>
+  <li><a href="/comments/commentsList/<?=$commentator->id;?>"><?=$commentator->name; ?></a>: <?=$commentator->count;?></li>
+  <?php endforeach; ?>
+</ul>

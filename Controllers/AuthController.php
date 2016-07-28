@@ -32,7 +32,9 @@ final class AuthController extends Controller {
             $db = \App::getInstance()->getComponent('db');
             $status = $auth_component->registration(
                 $db_component = $db, $name = $_POST['name'],
+                $login = $_POST['login'], $email = $_POST['email'],
                 $password = $_POST['password']);
+
             if ($status === false) {
                 Session::setFlash('Registration filed!');
                 Router::redirect('/auth/registration/');
@@ -41,9 +43,10 @@ final class AuthController extends Controller {
             # Login after registration
 
             $auth_component->login(
-                $db_component = $db, $name = $_POST['name'],
+                $db_component = $db, $login = $_POST['login'],
                 $password = $_POST['password']);
-            if($auth_component){
+
+            if(!$auth_component){
                 Session::setFlash('Login filed!');
                 return false;
             }
@@ -70,7 +73,7 @@ final class AuthController extends Controller {
             $db = \App::getInstance()->getComponent('db');
 
             $user = $auth_component->login(
-                $db_component = $db, $name = $_POST['name'],
+                $db_component = $db, $login = $_POST['login'],
                 $password = $_POST['password']);
 
             if (!$user) {

@@ -20,11 +20,11 @@ final class AuthComponent extends Component
      * @param $password
      * @return bool
      */
-    public function registration($db_component, $name, $password) {
+    public function registration($db_component, $name, $login, $email, $password) {
         $connection = $db_component->connect();
-        $stmt = $connection->prepare('INSERT INTO `user` (name, password) VALUES (:name, :password)');
+        $stmt = $connection->prepare('INSERT INTO `user` (name, login, email, password) VALUES (:name, :login, :email, :password)');
         $hash_password = $this->createHashPassword($this->config['secret_key'], $password);
-        return $stmt->execute([':name' => $name, ':password' => $hash_password]);
+        return $stmt->execute([':name' => $name, ':login' => $login, ':email' => $email, ':password' => $hash_password]);
     }
 
     /**
@@ -33,11 +33,11 @@ final class AuthComponent extends Component
      * @param $password
      * @return bool
      */
-    public function login($db_component, $name, $password) {
+    public function login($db_component, $login, $password) {
         $connection = $db_component->connect();
-        $stmt = $connection->prepare('SELECT * FROM `user` WHERE name = :name AND password = :password LIMIT 1');
+        $stmt = $connection->prepare('SELECT * FROM `user` WHERE login = :login AND password = :password LIMIT 1');
         $hash_password = $this->createHashPassword($this->config['secret_key'], $password);
-        $stmt->execute([':name' => $name, ':password' => $hash_password]);
+        $stmt->execute([':login' => $login, ':password' => $hash_password]);
         $user = $stmt->fetch(\PDO::FETCH_OBJ);
 
 

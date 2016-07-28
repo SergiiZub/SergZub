@@ -1,16 +1,32 @@
+<!--Categories list-->
 
+<?php if (!isset($data['article_list_by_category'])) :?>
 <h3><a href="/news/">Categories list</a></h3>
 <ul>
+    <?php foreach ($data['categories_list'] as $category) :?>
+        <a href="/news/category/<?=$category->category_name;?>/">
+            <div style="margin: 10px; background-color: #dedede; border-radius: 5px; padding: 10px">
+                <?=$category->category_name;?>
+            </div>
+        </a>
+    <?endforeach;?>
+</ul>
+<?else:?>
+<!--Articles list-->
+<h3><a href="/news/category/"><-Categories list</a></h3>
+<ul>
   <?php foreach ($data['article_list_by_category']['list'] as $news) :?>
-    <a href="/news/article/<?=$news->id;?>">
-      <div>
-          <img src=" <?=$news->img;?>" height="50px">
-          <p><?=$news->title;?></p>
+    <a href="/news/article/<?=$news->id;?>/">
+      <div style="margin: 10px; background-color: #dedede; border-radius: 5px; padding: 10px">
+          <img src=" <?=$news->img;?>" height="100px; " width="100px">
+          <?=$news->title;?>
       </div>
     </a>
   <?endforeach;?>
 </ul>
+<!--Articles list-->
 
+<!--Pagination-->
 <?php foreach ($data['article_list_by_category']['buttons'] as $button) :
     if ($button->is_active) : ?>
         <a href="<?=$button->page?>"><?=$button->text?></a>
@@ -18,3 +34,5 @@
         <span style="color: #555555"><?=$button->text?></span>
     <?php endif;
 endforeach; ?>
+<?endif;?>
+<!--Pagination-->

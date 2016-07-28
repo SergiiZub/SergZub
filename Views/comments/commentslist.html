@@ -1,0 +1,24 @@
+
+<!--Comments list-->
+<h4>User comments:</h4>
+<h5><?=count($data['comments_by_user']['list']);?></h5><hr>
+<?php foreach ($data['comments_by_user']['list'] as $comment) :?>
+  <div style="padding: 10px; margin-top: 20px; border: solid 1px #dedede">
+    <b><?= $comment->name;?></b><br>
+    <p><?= $comment->date;?></p>
+    <p>Message: <?= $comment->msg;?></p><br>
+  </div>
+<?php endforeach;?>
+<!--Comments list-->
+
+<!--Pagination-->
+<?php if ($data['comments_by_user']['buttons']):?>
+<?php foreach ($data['comments_by_user']['buttons'] as $button) :
+  if ($button->is_active) : ?>
+    <a href="<?=$button->page?>"><?=$button->text?></a>
+  <?php else:?>
+    <span style="color: #555555"><?=$button->text?></span>
+  <?php endif;
+endforeach; endif; ?>
+
+<!--Pagination-->

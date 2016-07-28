@@ -26,8 +26,12 @@ use Classes\Session;
         <div id="navbar" class="collapse navbar-collapse">
             <?php if (Session::get('login')) : ?>
             <ul class="nav navbar-nav">
-                <li <?php if (\App::getRouter()->getController() == 'pages') { ?> class="active" <?php } ?>><a  href="/admin/pages/">Pages</a></li>
+                <li <?php if (\App::getRouter()->getAction() == 'last_news') { ?> class="active" <?php } ?>><a  href="/admin/news/last_news/">Last news</a></li>
+                <li <?php if (\App::getRouter()->getAction() == 'category') { ?> class="active" <?php } ?>><a  href="/admin/news/category/">Categories</a></li>
                 <li <?php if (\App::getRouter()->getController() == 'contacts') { ?> class="active" <?php } ?>><a  href="/admin/contacts/">Contact Us</a></li>
+
+                <li <?php if (isset($_SESSION['USER_NAME'])) { ?> class="active" <?php } ?>><a  href="/users/profile"><?=isset($_SESSION['USER_NAME']) ? $_SESSION['USER_NAME'] : null;?></a></li>
+                <li <?php if (\App::getRouter()->getController() == 'auth') { ?> class="active" <?php } ?>><a  href="<?=isset($_SESSION['USER_NAME']) ? '/auth/logout' : '/auth/login';?>"><?=isset($_SESSION['USER_NAME']) ? 'Logout' : 'Login';?></a></li>
                 <li><a href="/admin/users/logout">Logout</a> </li>
             </ul>
             <?php endif; ?>

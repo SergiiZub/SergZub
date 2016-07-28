@@ -3,7 +3,7 @@
     <h4>Top five commentators:</h4>
     <ul>
         <?php foreach ($data['top_commentators'] as $commentator):?>
-            <li><a href="/comments/commentsList/<?=$commentator->id;?>/"><?=$commentator->name; ?></a>: <?=$commentator->count;?></li>
+            <li><a href="/admin/comments/commentsList/<?=$commentator->id;?>/"><?=$commentator->name; ?></a>: <?=$commentator->count;?></li>
         <?php endforeach; ?>
     </ul>
 </div>
@@ -29,7 +29,7 @@
 
             <?php foreach ($data['categories_list'] as $category) : ?>
         <div style="background-color: lightgrey ; border: solid lightgray 1px; border-radius: 5px; padding: 10px; margin: 10px;">
-                <li><a href="/news/category/<?=$category->category_name;?>/"><?=$category->category_name;?></a>
+                <li><a href="/admin/news/category/<?=$category->category_name;?>/"><?=$category->category_name;?></a>
                     <ul>
                         <?php foreach ($category->article_list as $article) :?>
                             <li><?=$article->title;?></li>

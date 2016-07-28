@@ -1,5 +1,8 @@
 <!---->
-<?php foreach ($data['last_news'] as $article):?>
+<!---->
+<?php //if(!isset($data['articles_list'])){ Router::redirect('/');}?>
+
+<?php foreach ($data['articles_list'] as $article):?>
 <a href="/news/article/<?=(int)$article->id;?>/">
     <div style="margin: 10px; background-color: #dedede; border-radius: 5px; padding: 10px">
         <img src=" <?=$article->img;?>" height="100px; " width="100px">

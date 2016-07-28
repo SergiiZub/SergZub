@@ -1,5 +1,5 @@
 <!--Article -->
-<a href="/news/category/<?=$data['article'][0]->category;?>/"><?=$data['article'][0]->category;?></a>
+<a href="/admin/news/category/<?=$data['article'][0]->category;?>/"><?=$data['article'][0]->category;?></a>
 <h2><?=$data['article'][0]->title;?></h2>
 <h4>Author: <?=$data['article'][0]->author;?></h4><br>
 <h4>Date: <?=$data['article'][0]->date;?></h4><br>
@@ -12,9 +12,11 @@
 <br><h5>tags:</h5>
 <p>
   <?php foreach (explode(' ', $data['article'][0]->tags) as $tag) : ?>
-    <a href="/news/articles_list/<?=$tag;?>/">#<?=$tag;?></a> ,
+    <a href="/admin/news/articles_list/<?=$tag;?>/">#<?=$tag;?></a> ,
   <?php endforeach;?>
 </p>
+
+<input type="">
 <!--Tags-->
 
 <!--Comments-->

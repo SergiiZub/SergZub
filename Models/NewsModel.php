@@ -24,7 +24,7 @@ class NewsModel
 
     public function getLastNews($db_component) {
         $connection = $db_component->connect();
-        $sql = "select * from article order by date desc limit 5";
+        $sql = "select title, img, id from article order by date desc limit 5";
         $stmt = $connection->prepare($sql);
         $stmt->execute();
         return ($stmt->fetchAll(\PDO::FETCH_OBJ));
@@ -87,6 +87,47 @@ class NewsModel
         $stmt = $connection->prepare($sql);
         $stmt->execute();
         return ($stmt->fetchAll(\PDO::FETCH_OBJ));
+    }
+
+    public function search($db_component, $param){
+        $connection = $db_component->connect();
+        $sql = "SELECT * FROM article WHERE tags LIKE CONCAT('%',:param,'%') ";
+        $stmt = $connection->prepare($sql);
+        $stmt->execute([':param' => $param]);
+        return ($stmt->fetchAll(\PDO::FETCH_OBJ));
+    }
+
+    public function saveCategory($db_component, $data, $id = null){
+        $connection = $db_component->connect();
+
+        if(!isset($data['alias']) || !isset($data['category_name'])) {
+            return false;
+        }
+
+        $id = (int)$id;
+        $alias = $data['alias'];
+        $title = $data['category_name'];
+        $is_published = isset($data['is_published']) ? 1 : 0;
+
+        if (!$id){
+            //add new record
+            $sql = "INSERT INTO categories (`alias`, `category_name`, `is_published`) 
+                    VALUES (':alias', ':category_name', ':is_published')";
+        } else {
+            //update existing record
+            $sql = "UPDATE pages
+                    SET `alias` = ':alias',
+                    `title` = ':category_name',
+                    `is_published` = ':is_published'
+                    WHERE id = ':id'
+              ";
+        }
+
+        $stmt = $connection->prepare($sql);
+        $stmt->execute([':alias' => $param, ':category_name' => $title, ':is_published' => $is_published]);
+        return ($stmt->fetchAll(\PDO::FETCH_OBJ));
+
+        return $this->db->query($sql);
     }
 }
 

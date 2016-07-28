@@ -1,0 +1,52 @@
+<div>
+  <h4>Comments:</h4>
+  <h5><?=count($data['comments']);?></h5><hr>
+  <?php foreach ($data['comments'] as $comment) :?>
+    <!--    <div style="padding: 10px; margin-top: 20px; border: solid 1px #dedede">-->
+    <div style="padding:10px; margin-top: 20px; border: 1px solid #dedede;">
+      <b style="color: red;"><?= $comment->name;?></b><br>
+      <p><?= $comment->date;?></p>
+      <p>Message: <?= $comment->msg;?></p><br>
+
+      <a href="javascript:void(0);" onclick="$(this).replaceWith($('#comment_form').clone().append('<input value=<?$comment->id;?> name=reply_to type=hidden />'));">reply to: </a><?= $comment->name;?><br>
+    </div>
+  <?php endforeach;?>
+  <br><hr>
+
+  <!--Comments-->
+  <!--Add comment form -->
+  <form class="this_comment_form" action="/comments/addComment/<?=$data['article'][0]->id;?>" method="post" id="this_comment_form">
+    <h4>Add comment</h4><br>
+    <input type="hidden" class="form-control" name="id" value="<?=$data['user']->id?>" placeholder="your name"><br>
+    <input type="hidden" class="form-control" name="name" value="<?=$data['user']->name?>" placeholder="your name"><br>
+    <input type="hidden" class="form-control" name="email" value="<?=$data['user']->email?>" placeholder="your email"><br>
+    <textarea name="msg" class="form-control"></textarea><br>
+    <input type="submit" value="Add comment" name="add_comment"><br>
+  </form>
+</div>
+<!--Add comment form -->
+
+
+<script>
+  function sendComment(form, event){
+    event.preventDefault();
+
+    // Переменная, куда отправляется форма
+    var post_url = $(form).attr('action');
+
+    my_form = form;
+
+    console.log(form);
+
+    $.post(post_url, $(form).serialize())
+        .done(function(data) {
+          console.log(my_form);
+
+          $(my_form).replaceWith(data);
+        });
+  }
+
+  $(".this_comment_form").submit(function(event) {
+    sendComment(this, event);
+  });
+</script>
