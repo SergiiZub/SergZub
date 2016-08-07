@@ -47,7 +47,7 @@ class NewsModel
     public function getArticle($db_component, $id) {
         $connection = $db_component->connect();
         //$sql = "select * from article WHERE id = 3";
-        $sql = "select a.id, a.title, a.content, a.author, a.date, a.tags, c.category_name as category  from article a 
+        $sql = "select a.id, a.title, a.content, a.author, a.date, a.tags, a.img, c.category_name as category  from article a 
           JOIN news_category c ON a.category_id = c.id
           WHERE a.id = '{$id}'";
         $stmt = $connection->prepare($sql);

@@ -7,8 +7,8 @@
       <b style="color: red;"><?= $comment->name;?></b><br>
       <p><?= $comment->date;?></p>
       <p>Message: <?= $comment->msg;?></p><br>
-
-      <a href="javascript:void(0);" onclick="$(this).replaceWith($('#comment_form').clone().append('<input value=<?$comment->id;?> name=reply_to type=hidden />'));">reply to: </a><?= $comment->name;?><br>
+      <p><?= $comment->reply_to;?></p>
+      <a href="javascript:void(0);" onclick="$(this).replaceWith($('#this_comment_form').clone().append('<input  name=reply_to value=<?=$comment->id;?> type=text />'));">reply to: </a><?= $comment->name;?><br>
     </div>
   <?php endforeach;?>
   <br><hr>
@@ -34,7 +34,7 @@
     // Переменная, куда отправляется форма
     var post_url = $(form).attr('action');
 
-    my_form = form;
+    var my_form = form;
 
     console.log(form);
 

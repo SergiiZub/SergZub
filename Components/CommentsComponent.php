@@ -27,26 +27,36 @@ class CommentsComponent extends Component
 
     public function addComment($db_component, $article_id, $data){
 
+        $status = 'Success';
+
+
         if (!isset($data['msg']) || !isset($data['msg'])){
             return null;
         }
-       // var_dump($data);die();
+
+        try {
         $connection = $db_component->connect();
+       // $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $article_id = (int)$article_id;
         $name = $data['name'];
         $email = $data['email'];
         $msg = $data['msg'];
         $user_id = $data['id'];
-        $reply_to = (isset($data['reply_to']) ?? null);
+        $reply_to = (isset($data['reply_to']) ? $data['reply_to'] : null);
 
         $sql = "INSERT INTO comments (reply_to, email, `name`, msg, article_id, user_id) 
                   VALUES (
                     '{$reply_to}', '{$email}', '$name', '{$msg}', '{$article_id}', '{$user_id}'
                     )";
-        //var_dump($sql);die();
         $stmt = $connection->prepare($sql);
         $stmt->execute();
+
+        } catch (PDOException $e) {
+            $status = 'Fail: ' . $e->getMessage();
+        }
+
+        return $status;
     }
 
     public function getTopCommentators($db_component) {

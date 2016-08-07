@@ -8,6 +8,7 @@ use Classes\Session;
 use Core\Controller;
 use Components\NewsComponent;
 use Core\Router;
+use Core\View;
 use Models\NewsModel;
 
 class NewsController extends Controller
@@ -39,7 +40,7 @@ class NewsController extends Controller
         $comments_component = \App::getInstance()->getComponent('comments');
         $db = \App::getInstance()->getComponent('db');
         $this->data['top_commentators'] = $comments_component->getTopCommentators($db);
-
+      //  $this->data['top_menu'] = $this->topMenu();
     }
 
     /**
@@ -109,6 +110,11 @@ class NewsController extends Controller
             return false;
         }
         $this->data['articles_list'] = $result;
+    }
+
+    public function topMenu(){
+        $top_menu = $this->model->getCategoriesList($this->db);
+        return  new View($top_menu, ROOT.'Views'.DS.'news'.DS.'top_menu.html');
     }
 
     public function admin_index(){

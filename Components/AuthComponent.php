@@ -5,6 +5,7 @@ namespace Components;
 
 use Classes\Session;
 use Core\Component;
+use Core\Router;
 
 final class AuthComponent extends Component
 {
@@ -88,7 +89,30 @@ final class AuthComponent extends Component
 
     private function decryptSessionToken($secret_key, $session_id) {
         list($user_id, $sign) = explode(':' , $session_id);
+
+//        if(!function_exists('hash_equals'))
+//        {
+//            function hash_equals($str1, $str2)
+//            {
+//                if(strlen($str1) != strlen($str2))
+//                {
+//                    return false;
+//                }
+//                else
+//                {
+//                    $res = $str1 ^ $str2;
+//                    $ret = 0;
+//                    for($i = strlen($res) - 1; $i >= 0; $i--)
+//                    {
+//                        $ret |= ord($res[$i]);
+//                    }
+//                    return !$ret;
+//                }
+//            }
+//        }
         if (!hash_equals($sign, md5($secret_key . $user_id))) {
+
+            Router::redirect('/auth/');
             return false;
         }
         return $user_id;

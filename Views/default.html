@@ -16,6 +16,7 @@ use Classes\Session;
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript" src="/js/admin.js"></script>
     <style>
         #image {width: 60px; float:left}
         #text {float:right float:left; width:500px}
@@ -45,6 +46,7 @@ use Classes\Session;
 
                         <li <?php if (isset($_SESSION['USER_NAME'])) { ?> class="active" <?php } ?>><a  href="/users/profile"><?=isset($_SESSION['USER_NAME']) ? $_SESSION['USER_NAME'] : null;?></a></li>
                         <li <?php if (\App::getRouter()->getController() == 'auth') { ?> class="active" <?php } ?>><a  href="<?=isset($_SESSION['USER_NAME']) ? '/auth/logout' : '/auth/login';?>"><?=isset($_SESSION['USER_NAME']) ? 'Logout' : 'Login';?></a></li>
+<!--                        <li>--><?//=$data['content']['top_menu'];?><!--</li>-->
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -64,7 +66,7 @@ use Classes\Session;
 
 <!--            --><?//=\App::getInstance()->getComponent('auth')->getCurrentUser()->name;?>
             </div>
-
+<!--            --><?//=var_dump($data);?>
         </div><!-- /.container -->
         <script>
             window.onload = function() {

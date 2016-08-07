@@ -91,6 +91,7 @@ final class App
             $view_object = new View($controller_object->getData(), $view_path);
             $content = $view_object->render();
 
+
         } else {
             throw new Exception('Method ' . $controller_method . ' of class ' . $controller_class . ' does not exist.');
         }

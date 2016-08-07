@@ -1,4 +1,5 @@
 <!--Top commentators-->
+
 <div style="float: right; ">
     <h4>Top five commentators:</h4>
     <ul>
@@ -11,7 +12,7 @@
 
 <!--Top commentators-->
 <!--Slider-->
-<div id="slider" style="height: 140px;">
+<div id="slider" style="height: 140px; margin: auto;">
   <div id="image">
     <img id="img" height="100px" width="100px">
   </div>
@@ -25,14 +26,25 @@
 
 <!--Categories List -->
 <div style="margin: 10px">
-    <ul>
+    <ul type="none">
 
             <?php foreach ($data['categories_list'] as $category) : ?>
         <div style="background-color: lightgrey ; border: solid lightgray 1px; border-radius: 5px; padding: 10px; margin: 10px;">
-                <li><a href="/news/category/<?=$category->category_name;?>/"><?=$category->category_name;?></a>
-                    <ul>
+                <li><h4><a href="/news/category/<?=$category->category_name;?>/"><?=$category->category_name;?></a></h4>
+                    <ul type="none">
                         <?php foreach ($category->article_list as $article) :?>
-                            <li><?=$article->title;?></li>
+
+                                <li>  
+                                    <div class="index-news-list">
+                                        <p id="load <?=$article->id;?>" style="cursor: pointer">
+                                            <span style="color: grey"><small><?=$article->date;?></small></span>
+                                            <a href="/news/article/<?=$article->id;?>"><?=$article->title;?></a>
+                                            <img src="<?=$article->img;?>">
+                                            <i><?=substr($article->content, 0, 500);?><a href="/news/article/<?=$article->id;?>"> ... </a></i>
+                                        </p>
+                                    </div>
+                                </li>
+
                         <?endforeach;?>
                     </ul>
                 </li>
@@ -42,6 +54,11 @@
     </ul>
 </div>
 
+<?php
+//$ch = curl_init('http://vk.com');
+//curl_exec($ch); // выполняем запрос curl - обращаемся к сервера php.su
+//curl_close($ch);
+//?>
 
 <!--Categories List -->
 
@@ -59,4 +76,19 @@
       setTimeout(change,2000);
     }
     change()
+</script>
+
+<script>
+    document.ready(function () {
+        $("#load 1").bind("click", function () {
+            var id = '';
+            $.ajax({
+                url: "/",
+                type: "post",
+                data:({id: id}),
+                dataType: "html",
+                beforeSend: funcBefore,
+                success: funcSuccess})
+        });
+    });
 </script>

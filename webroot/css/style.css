@@ -15,3 +15,31 @@ form{
     width: 400px;
     max-width: 400px;
 }
+
+.index-news-list{
+
+}
+/*.index-news-list :hover p{*/
+    /*color: aquamarine;*/
+    /*background-color: red;*/
+/*}*/
+
+.index-news-list img, i{
+    display: none;
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+}
+
+.index-news-list :hover img{
+    display: block;
+    visibility: visible;
+    height: 50px;
+    width: auto;
+}
+
+.index-news-list :hover i{
+    display: inline;
+    visibility: visible;
+    margin: 20px;
+}

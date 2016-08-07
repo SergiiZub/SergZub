@@ -25,10 +25,10 @@ class CommentsController extends Controller
             $data = $_POST;
             $comments_component = \App::getInstance()->getComponent('comments');
             $db = \App::getInstance()->getComponent('db');
-            $comments_component->addComment($db, $article_id, $data);
-            Router::redirect('/news/article/'.$article_id.'/');
+            $this->data['status'] = $comments_component->addComment($db, $article_id, $data);
+            //Router::redirect('/news/article/'.$article_id.'/');
         } else {
-            \Router::redirect('');
+           // \Router::redirect('');
         }
     }
 
